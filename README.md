@@ -2,6 +2,6 @@
 
 A Matlab class for running multislice electron diffraction simulations of crystals.
 
-''''matlab
+````matlab
 a = 1:10;
-''''
+````

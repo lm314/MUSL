@@ -5,3 +5,7 @@ A Matlab class for running multislice electron diffraction simulations of crysta
 ````matlab
 a = 1:10;
 ````
+
+## Usage
+
+## Documentation

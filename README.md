@@ -1,10 +1,6 @@
 # MuSL
 
-A Matlab class for running multislice electron diffraction simulations of crystals.
-
-````matlab
-a = 1:10;
-````
+A Matlab class for running multislice electron diffraction simulations of cubic crystals that has been benchmarked against experiments (see the following [Ultramicroscopy paper](https://doi.org/10.1016/j.ultramic.2021.113211) and [Dissertation](https://repository.asu.edu/items/62749)). The code can be used to get the intensities of reflections in a diffraction pattern as well as the resulting real space image. It is also capable of producing intensity versus depth plots. 
 
 ## Usage
 
@@ -80,7 +76,7 @@ For the intensity at each step up until the specfied thickness, the argument `de
 [intVal,reflList] = objMUSL.intensity(AngleX,AngleY,'depth');
 ````
 
-For the previously mentioned Ultramicroscopy paper and Dissertation, intensities at across a grid of sample orientations were simulated
+For the previously mentioned [Ultramicroscopy paper](https://doi.org/10.1016/j.ultramic.2021.113211) and [Dissertation](https://repository.asu.edu/items/62749), intensities at across a grid of sample orientations were simulated
 
 ### Plotting
 

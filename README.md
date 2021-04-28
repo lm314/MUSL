@@ -8,6 +8,70 @@ a = 1:10;
 
 ## Usage
 
+To use the class, we must first initial a MUSL object as is done below for a 200 keV electron beam incident on a 200 nm thick slab of Si(001):
+
+````matlab
+% lattice constants along each dimension [angstroms]
+objLatticeInfo.Lattice = [5.431; 5.431; 5.431]; 
+% locations of the atoms in units of the lattice constants.
+% we assume we can treat the unit cell as a single layer.
+objLatticeInfo.Positions = [0,0,0;              
+                            0.5,0.5,0;         
+                            0.25,0.25,0;
+                            0.75,0.75,0;
+                            0.5,0,0;
+                            0,0.5,0;
+                            0.25,0.75,0;
+                            0.75,0.25,0 ];
+
+% atomic number of element at each point of the Positions matrix
+objLatticeInfo.AtomicNum = repmat(14,size(objLatticeInfo.Positions,1),1);
+objLatticeInfo.BeamEnergy = 200*10^3;   %accelerating potential [Volts]
+objLatticeInfo.crystalThickness = 2000; %crystal thickness [angstroms]
+
+AngleX = 0;     %Tilt of the sample along X [mrad]
+AngleY = 0;     %Tilt of the sample along Y [mrad]
+
+objMUSL = MUSL(objLatticeInfo);
+````
+
+There a many options that can be called during initialization to customize the subsequent runs with the object. For example, the type of Bravais Lattice of the material can be specified using name value pairs
+
+````matlab
+objMUSL = MUSL(objLatticeInfo,'BravaisLattice','diamond');
+````
+
+as can the temperature of the material, the rotation of the crystal axes relative to the tilt axes of the sample holder, and even whether or not the run will occur or not the run will be on a GPU among other settings:
+
+````matlab
+objMUSL = MUSL(objLatticeInfo,...
+                'Temperature',293,...
+                'BravaisLattice','diamond',...
+                'RotationCrystal',-45,...
+                'partKMax',0.0133,...
+                'partKExtent',3,...
+                'NumUnitCells',8,...
+                'NumPixels',512,...
+                'UseGPU',true);
+````
+
+The simulation that records a single depth value can be run using the syntax:
+
+````matlab
+[intVal,reflList] = objMUSL.intensity(AngleX,AngleY);
+
+% Table with the reflections and intensities
+intensityData = table(reflList,permute(intVal,[1 3 2]));
+intensityData.Properties.VariableNames = {'relList' 'intensity'};
+````
+which gives a table with the intensities and the corresponding Miller indices.
+
+The image can also be recovered using 
+
+````matlab
+im = abs(fftshift(ifft2(objMUSL.Wave)));
+````
+
 ## Documentation
 
 `MUSL` calcates the wave function as it traverses a cubic crystal and can

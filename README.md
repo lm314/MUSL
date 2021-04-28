@@ -55,6 +55,8 @@ objMUSL = MUSL(objLatticeInfo,...
                 'UseGPU',true);
 ````
 
+### Simulations
+
 The simulation that records a single depth value can be run using the syntax:
 
 ````matlab
@@ -64,13 +66,25 @@ The simulation that records a single depth value can be run using the syntax:
 intensityData = table(reflList,permute(intVal,[1 3 2]));
 intensityData.Properties.VariableNames = {'relList' 'intensity'};
 ````
-which gives a table with the intensities and the corresponding Miller indices.
+which can be transformed into a table with the intensities and the corresponding Miller indices.
 
 The image can also be recovered using 
 
 ````matlab
 im = abs(fftshift(ifft2(objMUSL.Wave)));
 ````
+
+For the intensity at each step up until the specfied thickness, the argument `depth` is used with the `intensity` method
+
+````matlab
+[intVal,reflList] = objMUSL.intensity(AngleX,AngleY,'depth');
+````
+
+For the previously mentioned Ultramicroscopy paper and Dissertation, intensities at across a grid of sample orientations were simulated
+
+### Plotting
+
+The `MUSL` class has built in plotting functions for the 
 
 ## Documentation
 

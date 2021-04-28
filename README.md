@@ -4,6 +4,8 @@ A Matlab class for running multislice electron diffraction simulations of cubic 
 
 ## Usage
 
+Example scripts can be found in the [Examples](Examples/) folder; we include some samples here for thoroughness.
+
 To use the class, we must first initial a MUSL object as is done below for a 200 keV electron beam incident on a 200 nm thick slab of Si(001):
 
 ````matlab

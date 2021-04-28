@@ -76,11 +76,70 @@ For the intensity at each step up until the specfied thickness, the argument `de
 [intVal,reflList] = objMUSL.intensity(AngleX,AngleY,'depth');
 ````
 
-For the previously mentioned [Ultramicroscopy paper](https://doi.org/10.1016/j.ultramic.2021.113211) and [Dissertation](https://repository.asu.edu/items/62749), intensities at across a grid of sample orientations were simulated
+For the previously mentioned [Ultramicroscopy paper](https://doi.org/10.1016/j.ultramic.2021.113211) and [Dissertation](https://repository.asu.edu/items/62749), intensities at across a grid of sample orientations were simulated 
+
+````matlab
+AngleX = linspace(-2.75,3.24,70);     %Tilt of the sample along X [mrad]
+AngleY = linspace(10.75,13.72,35);    %Tilt of the sample along Y [mrad]
+
+[X,Y] = meshgrid(AngleX,AngleY);
+
+%timer to check progress of mutlslice step
+tStart = tic;
+
+for ii=1:numel(X)
+    if(mod(ii,100)==0) %progress displayed
+        tElapsed = toc(tStart);
+        fprintf('On linear index %d of %d. Elapsed time: %0.1f minutes \n',...
+            ii,numel(X),tElapsed/60)
+    end
+    [intVal{ii},~] = objMUSL.intensity(X(ii),Y(ii));
+end
+````
 
 ### Plotting
 
-The `MUSL` class has built in plotting functions for the 
+The `MUSL` class has built in plotting functions for the above cell output that are suited for non-vector images (`plotMap`) and vector image formats (`plotMapEPS`):
+
+````matlab
+fontSize = 12;
+figure('Position', [800 100 500 300])
+objMUSL.plotMap(X,Y,intVal,[0,0],fontSize)
+colorbar
+````
+![exampleIntensityMap000](images/intensityMapExample000.png )
+
+````matlab
+figure('Position', [800 100 500 300])
+objMUSL.plotMap(X,Y,intVal,[2,-2],fontSize)
+colorbar
+````
+![exampleIntensityMap220](images/intensityMapExample220.png )
+
+There is also a built in plotting function for the intensity vs depth outputs:
+
+````matlab 
+AngleX = 5;     %Tilt of the sample along X [mrad]
+AngleY = 5;    %Tilt of the sample along Y [mrad]
+objMUSL = MUSL(objLatticeInfo,'BravaisLattice','diamond','RotationCrystal',-45);
+[intVal,~] = objMUSL.intensity(AngleX,AngleY,'depth');
+````
+
+````matlab
+figure
+objMUSL.plotIntVsDepth(intVal,[0,0],12)
+title('(000)')
+````
+
+![exampleIntensityDepth000](images/intensityDepthExample000.png )
+
+````matlab
+figure
+objMUSL.plotIntVsDepth(intVal,[2,2],12)
+title('(220)')
+````
+
+![exampleIntensityDepth220](images/intensityDepthExample220.png )
 
 ## Documentation
 
